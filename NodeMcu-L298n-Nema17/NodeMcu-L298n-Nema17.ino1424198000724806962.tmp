@@ -96,34 +96,19 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
             break;
         case WStype_TEXT:
             affiche("Texte recu");
-            USE_SERIAL.printf("[%u] get Text: %s\n", num, payload);                
+            USE_SERIAL.printf("[%u] get Text: %s\n", num, payload);
+            USE_SERIAL.printf("Payload: %d\n", payload[1]);
+            USE_SERIAL.printf("Payload: %c\n", payload[1]);
+            
+                String payload_str = String((char*) payload);
+            USE_SERIAL.printf("Payload: %s\n", payload);
+                
+                if(payload[1] == '6') { display.println("AVANT S6"); } else { display.println("AVANT NON 6"); }
+                if(payload[1] == '8') { display.println("AVANT G8"); } else { display.println("AVANT NON 8"); }
 
             if(payload[0] == '#') {
-                if(payload[1] == '6') { 
-                  if(payload[2] == '1') a1 = angle;
-                  if(payload[2] == '2') a2 = angle;
-                  if(payload[2] == '3') a3 = angle;
-                  if(payload[2] == '4') a4 = angle;
-                  if(payload[2] == '5') a5 = angle;
-                  if(payload[2] == '6') a6 = angle;
-                  if(payload[2] == '7') a7 = angle;
-                  if(payload[2] == '8') a8 = angle;
-                  if(payload[2] == '9') a9 = angle;
-                  if(payload[2] == '0') a10 = angle;
-                  }
-                  
-                if(payload[1] == '8') { 
-                  if(payload[2] == '1') go(a1);
-                  if(payload[2] == '2') go(a2);
-                  if(payload[2] == '3') go(a3);
-                  if(payload[2] == '4') go(a4);
-                  if(payload[2] == '5') go(a5);
-                  if(payload[2] == '6') go(a6);
-                  if(payload[2] == '7') go(a7);
-                  if(payload[2] == '8') go(a8);
-                  if(payload[2] == '9') go(a9);
-                  if(payload[2] == '0') go(a10);
-                  }
+                if(payload[1] == '6') { display.println("Save 66"); } else { display.println("NON Save 66"); }
+                if(payload[1] == '8') { display.println("Get 86"); } else { display.println("NON Save 66"); }
                 
                 switch(payload[1]) {
                   case 49: display.println("HAUT");
@@ -142,6 +127,26 @@ void webSocketEvent(uint8_t num, WStype_t type, uint8_t * payload, size_t lenght
                       tourne(-1);
                       break;
                   case 57: display.println("STOP"); break;
+                  case 61: display.println("61"); a1 = angle; break;
+                  case 62: display.println("62"); a2 = angle; break;
+                  case 63: display.println("63"); a3 = angle; break;
+                  case 64: display.println("64"); a4 = angle; break;
+                  case 65: display.println("65"); a5 = angle; break;
+                  case 66: display.println("66"); a6 = angle; USE_SERIAL.printf ("A6: [%d]", a6); break;
+                  case 67: display.println("67"); a7 = angle; USE_SERIAL.printf("A7: [%d]", a7); break;
+                  case 68: display.println("68"); a8 = angle; break;
+                  case 69: display.println("69"); a9 = angle; break;
+                  case 60: display.println("60"); a10 = angle; break;
+                  case 81: display.println("81"); go(a1); break;
+                  case 82: display.println("82"); go(a2); break;
+                  case 83: display.println("83"); go(a3); break;
+                  case 84: display.println("84"); go(a4); break;
+                  case 85: display.println("85"); go(a5); break;
+                  case 86: display.println("86"); go(a6); USE_SERIAL.printf("A6: [%d]", a6); break;
+                  case 87: display.println("87"); go(a7); USE_SERIAL.printf("A7: [%d]", a7); break;
+                  case 88: display.println("88"); go(a8); break;
+                  case 89: display.println("89"); go(a9); break;
+                  case 80: display.println("80"); go(a10); break;
                   default: display.println("Rien"); display.println(payload[1]);
                 }
                 
@@ -338,8 +343,8 @@ void tourne(int steps) {
   angle += steps;
   if(angle>=200) angle -= 200;
   if(angle<= -200) angle += 200;
-            USE_SERIAL.printf("Steps: [%d]", steps);
-            USE_SERIAL.printf("Angle: [%d]", angle);
+           // USE_SERIAL.printf("Steps: [%d]", steps);
+           // USE_SERIAL.printf("Angle: [%d]", angle);
 }
 
 void go(int getAngle) {
